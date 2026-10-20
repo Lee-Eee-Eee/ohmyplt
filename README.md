@@ -46,7 +46,7 @@ python scripts/preflight.py output/network.pdf --out output/qa
 
 默认使用系统已安装的Arial与Times New Roman；可通过`--font-dir`注册自己提供的字体目录。跨平台功能测试可显式指定`--body-font "Liberation Sans" --math-font "Liberation Serif"`，实际字体记录在输出清单中。
 
-代码示例使用固定种子的演示数据。上方PNG是用户认可的实际项目风格示例。工具用法见[references/tools.md](references/tools.md)。
+代码示例使用固定种子的演示数据。上方PNG是实际项目风格示例。工具用法见[references/tools.md](references/tools.md)。
 
 ## 借鉴与许可
 
