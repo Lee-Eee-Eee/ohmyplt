@@ -40,11 +40,10 @@ metadata:
 
 ## 快速使用
 
+以下命令在技能目录中运行；从用户项目调用时使用脚本的完整路径，并将输出指向用户的工作目录。
+
 ```bash
-python scripts/doctor.py
-python examples/network.py --out /path/to/output
-python examples/data_plot.py --out /path/to/output
-python scripts/preflight.py /path/to/output/network.pdf --out /path/to/output/qa
+python scripts/quickstart.py --out /path/to/output
 ```
 
-两个可运行示例使用固定种子的演示数据；`assets/approved-network-v19.png`是本次研究项目中用户认可的实际风格示例。复制组件时让数据与布局保持独立，按当前研究内容组织新图。
+体验环境未安装Arial/Times时，可显式加`--portable`使用Matplotlib自带的DejaVu Sans/Serif；正式绘图按用户选择的字体执行。三个可运行示例使用固定种子的演示数据；`assets/approved-network-v19.png`是本次研究项目中用户认可的实际风格示例。复制组件时让数据与布局保持独立，按当前研究内容组织新图。

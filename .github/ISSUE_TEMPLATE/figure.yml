@@ -1,0 +1,23 @@
+name: Figure or rendering issue
+description: Share the input and smallest example needed to reproduce a figure problem.
+title: "[Figure] "
+body:
+  - type: textarea
+    id: task
+    attributes:
+      label: What are you drawing?
+      description: Include the task prompt and expected result. English and Chinese are welcome.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Minimal source and command
+      description: Attach a small reproducible script or safe sample data, plus the command you ran.
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Result and environment
+      description: Attach the figure or error output, Python version, OS, chosen fonts, and agent if applicable.

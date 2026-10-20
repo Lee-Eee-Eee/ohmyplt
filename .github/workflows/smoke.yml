@@ -1,28 +1,39 @@
 name: skill-and-figure-smoke
 on: [push, pull_request]
+permissions:
+  contents: read
 jobs:
   render:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ['3.10', '3.12']
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      - name: Install runtime and test fonts
+          python-version: ${{ matrix.python }}
+      - name: Install runtime
         run: |
           python -m pip install -r requirements.txt
-          sudo apt-get update -qq
-          sudo apt-get install -y fonts-liberation
       - name: Compile helpers
-        run: python -m compileall -q scripts examples
-      - name: Render component examples
+        run: python -m compileall -q scripts examples tests
+      - name: Check first-run errors and model operations
+        run: python -m unittest discover -s tests -v
+      - name: Run the illustrated NumPy model
+        run: python examples/residual_model.py --out output/prediction.json
+      - name: Run the portable quickstart outside the checkout
+        shell: bash
         run: |
-          python scripts/doctor.py --body-font 'Liberation Sans' --math-font 'Liberation Serif'
-          python examples/network.py --out output --body-font 'Liberation Sans' --math-font 'Liberation Serif'
-          python examples/data_plot.py --out output --body-font 'Liberation Sans' --math-font 'Liberation Serif'
-      - name: Audit rendered PDFs
-        run: |
-          python scripts/preflight.py output/network.pdf --out output/qa/network
-          python scripts/preflight.py output/data-plot.pdf --out output/qa/data-plot
+          cd "$RUNNER_TEMP"
+          python "$GITHUB_WORKSPACE/scripts/quickstart.py" --portable --out "$GITHUB_WORKSPACE/output"
       - name: Audit geometry helpers
         run: python vendor/nature_figure/audit_figure_collisions.py --self-test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: figures-${{ matrix.os }}-py${{ matrix.python }}
+          path: output/
+          if-no-files-found: ignore

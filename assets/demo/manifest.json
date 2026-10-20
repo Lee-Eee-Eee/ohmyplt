@@ -1,0 +1,31 @@
+{
+  "kind": "rendered walkthrough of the seeded repository example",
+  "duration_seconds": 18.0,
+  "fps": 6,
+  "size": [
+    1120,
+    700
+  ],
+  "frames": 108,
+  "pdf_inspection": {
+    "checks": {
+      "text": 0,
+      "collision": 0,
+      "fonts": 0
+    },
+    "fonts": [
+      "Arial-BoldMT",
+      "ArialMT",
+      "TimesNewRomanPS-ItalicMT",
+      "TimesNewRomanPSMT"
+    ],
+    "unexpected_fonts": []
+  },
+  "sources_sha256": {
+    "examples/residual_model.py": "20f17a230c5ef4df2a7347ab796421cdb24ed13639b97e8b4f35f1e3237e4d8f",
+    "examples/network.py": "0078b341467da8f6642740dcf544746526c09a207b7b165f942b7dcd67666e2a",
+    "assets/gallery/network.pdf": "fe25534727605b01cfe5dd38848017638d93302c245264120e073df4d66e2902",
+    "assets/gallery/network-demo.npz": "8e2213c2d869551ff3d64a82a780d6401461f6f282c2abd93e086ca8a06718b8",
+    "scripts/build_demo.py": "005bd8320979451080667ea26bb342e9177ae57b2ba95dfec9598b40d0f18962"
+  }
+}
