@@ -9,6 +9,10 @@ An agent skill for scientific architecture diagrams and research plots. Turn mod
 [![Figure tests](https://github.com/Lee-Eee-Eee/ohmyplt/actions/workflows/smoke.yml/badge.svg)](https://github.com/Lee-Eee-Eee/ohmyplt/actions/workflows/smoke.yml)
 [![Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
+![18-second walkthrough: model source, full architecture, operation details and editable exports](assets/demo/walkthrough.gif)
+
+An 18-second rendered tour of the seeded example: runnable model source, the exported architecture, weight and residual details, and actual PDF inspection results. [MP4](assets/demo/walkthrough.mp4) · [Model](examples/residual_model.py) · [Drawing](examples/network.py)
+
 ![Scientific architecture with physical inputs, sampling, shared decoding and training paths](assets/approved-network-v19.png)
 
 A research-project figure that shaped this skill. The examples below demonstrate its reusable components.
@@ -62,6 +66,8 @@ Open `output/network.png`, `output/data-plot.png`, and `output/style-comparison.
 [Python](examples/network.py) · [SVG](assets/gallery/network.svg) · [PDF](assets/gallery/network.pdf)
 
 Seeded demonstration signals and weights show how components represent operations. Reproduce: `python examples/network.py --out output`.
+
+Run the matching NumPy forward pass with `python examples/residual_model.py --out output/prediction.json`. To rebuild the walkthrough, install ffmpeg on PATH and run `python scripts/build_demo.py`; intermediate frames and PDF reports go to `output/demo/`.
 
 ### Research data panels
 

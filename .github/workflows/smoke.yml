@@ -20,8 +20,10 @@ jobs:
           python -m pip install -r requirements.txt
       - name: Compile helpers
         run: python -m compileall -q scripts examples tests
-      - name: Check first-run errors
+      - name: Check first-run errors and model operations
         run: python -m unittest discover -s tests -v
+      - name: Run the illustrated NumPy model
+        run: python examples/residual_model.py --out output/prediction.json
       - name: Run the portable quickstart outside the checkout
         shell: bash
         run: |

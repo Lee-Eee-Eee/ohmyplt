@@ -8,6 +8,10 @@
 
 [![绘图测试](https://github.com/Lee-Eee-Eee/ohmyplt/actions/workflows/smoke.yml/badge.svg)](https://github.com/Lee-Eee-Eee/ohmyplt/actions/workflows/smoke.yml)
 
+![18 秒演示：模型源码、完整架构、运算细节与可编辑导出](assets/demo/walkthrough.gif)
+
+这段 18 秒渲染导览使用固定种子的示例，展示可运行模型源码、导出的完整架构、权重与残差细节，以及实际 PDF 检查结果。[MP4](assets/demo/walkthrough.mp4) · [模型源码](examples/residual_model.py) · [绘图源码](examples/network.py)
+
 ![含物理输入、时间采样、共享解码和训练路径的科研架构图](assets/approved-network-v19.png)
 
 这张实际项目图形成了本技能的风格。下面的可运行示例展示其中可复用的组件。
@@ -61,6 +65,8 @@ python scripts/quickstart.py --portable --out output
 [Python 源码](examples/network.py) · [SVG](assets/gallery/network.svg) · [PDF](assets/gallery/network.pdf)
 
 固定种子的演示信号和权重用于展示组件如何表达运算。复现：`python examples/network.py --out output`。
+
+运行对应的 NumPy 前向计算：`python examples/residual_model.py --out output/prediction.json`。重新制作演示需将 ffmpeg 加入 PATH，再运行 `python scripts/build_demo.py`；中间帧与 PDF 检查报告保存在 `output/demo/`。
 
 ### 科研数据面板
 
