@@ -1,0 +1,20 @@
+{
+  "repository": "https://github.com/Yuan1z0825/nature-skills",
+  "commit": "6827ae57b62b201acd06b401619050411c0d82f6",
+  "license": "Apache-2.0",
+  "notice_included": false,
+  "files": [
+    {
+      "path": "audit_pdf_text.py",
+      "url": "https://raw.githubusercontent.com/Yuan1z0825/nature-skills/6827ae57b62b201acd06b401619050411c0d82f6/skills/nature-figure/scripts/audit_pdf_text.py",
+      "sha256": "0b3d3e30ce9ec7191b8ba6dd053226487ab41594297005afcd127acda3b08281",
+      "modified": false
+    },
+    {
+      "path": "audit_figure_collisions.py",
+      "url": "https://raw.githubusercontent.com/Yuan1z0825/nature-skills/6827ae57b62b201acd06b401619050411c0d82f6/skills/nature-figure/scripts/audit_figure_collisions.py",
+      "sha256": "4bd020238a9f207c8a67c61d7209cef5959f2995a1d9cd95911d6fa93de7aa36",
+      "modified": false
+    }
+  ]
+}
