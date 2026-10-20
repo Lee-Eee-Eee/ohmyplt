@@ -4,6 +4,14 @@
 
 `pip install -r requirements.txt`安装Matplotlib、NumPy、PyMuPDF。默认使用系统的Arial与Times New Roman，字体文件由使用者提供；可用`--font-dir /path/to/fonts`或`OHMYPLT_FONT_DIR`注册本地字体。
 
+从仓库目录快速生成并检查全部示例：
+
+```bash
+python scripts/quickstart.py --out output
+```
+
+`--portable`明确改用Matplotlib自带的DejaVu Sans/Serif，仅影响本次示例。输出位置相对于当前目录，也可传入绝对路径。命令依次运行字体检查、三个示例、PDF检查与最终尺寸预览；失败时停在对应步骤。可单独运行下面的命令。
+
 ```bash
 python scripts/doctor.py
 python scripts/doctor.py --glyphs "Σθη∂←→×"

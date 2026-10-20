@@ -1,0 +1,69 @@
+{
+  "size_mm": [
+    210.00000000000003,
+    96.0
+  ],
+  "fonts": {
+    "body_font": "Arial",
+    "math_font": "Times New Roman",
+    "body_pt": 7,
+    "math_pt": 7.5,
+    "script_pt": 5.4
+  },
+  "formats": [
+    "pdf",
+    "svg",
+    "png"
+  ],
+  "dpi": 300,
+  "warnings": [],
+  "inputs": [
+    {
+      "name": "style_comparison.py",
+      "sha256": "2d02c43b6177aa5c6e57e0267bd26544ac72e90a4f1f9a3edced265b5b9c375d"
+    },
+    {
+      "name": "style-comparison-data.npz",
+      "sha256": "f2d0e8221996ef87e8b27d50e805be0214474c26abd5665dd660e59749247cae"
+    }
+  ],
+  "comparison": {
+    "data_kind": "seeded demonstration data",
+    "seed": 19,
+    "generator": "numpy.random.default_rng",
+    "numpy_version": "2.1.1",
+    "matplotlib_version": "3.9.2",
+    "samples_per_curve": 121,
+    "source_data": "style-comparison-data.npz",
+    "baseline": {
+      "body_font": [
+        "sans-serif"
+      ],
+      "mathtext_fontset": "dejavusans",
+      "font_size_pt": 10.0
+    },
+    "checks": {
+      "identical_data_and_axes": true,
+      "line_count_per_panel": 2,
+      "passed": true,
+      "max_deviation_pt": 0.0,
+      "tolerance_pt": 1.5,
+      "boxes_pt": [
+        [
+          50.5984251968504,
+          73.4740157480315,
+          223.22834645669292,
+          149.6692913385827
+        ],
+        [
+          354.18897637795277,
+          73.4740157480315,
+          223.22834645669292,
+          149.6692913385827
+        ]
+      ],
+      "mode": "row"
+    },
+    "caption": "Same seeded data and axis limits in both panels."
+  }
+}

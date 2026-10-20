@@ -151,8 +151,8 @@ class Plate:
         if W.ndim!=2 or b.shape!=(W.shape[0],):raise ValueError('Dense bias must match output width.')
         self.card(x,y,w,h,face=PURPLE,edge=INK,z=3);self.text(x+w/2,y+h-2.5,'Dense',ha='center')
         rows=np.linspace(0,W.shape[0]-1,min(4,W.shape[0]),dtype=int);cols=np.linspace(0,W.shape[1]-1,min(4,W.shape[1]),dtype=int)
-        yout=np.linspace(y+10,y+h-7,len(rows));yin=np.linspace(y+10,y+h-7,len(cols));left=x+3;right=x+w-3
-        cx=x+w/2;cy=y+7.5;limit=max(abs(W).max(),1e-15)
+        yout=np.linspace(y+10,y+h-8.3,len(rows));yin=np.linspace(y+10,y+h-8.3,len(cols));left=x+3;right=x+w-3
+        cx=x+w/2;cy=y+8;limit=max(abs(W).max(),1e-15)
         for j,yo in zip(rows,yout):
             for i,yi in zip(cols,yin):
                 value=W[j,i]/limit;self.ax.plot([left,right],[yi,yo],color=WEIGHT((value+1)/2),lw=.3+.4*abs(value),zorder=4)
@@ -163,7 +163,7 @@ class Plate:
             for yy in ys:self.ax.add_patch(Circle((xx,yy),.52,facecolor='white',edgecolor='#667689',lw=.55,zorder=5))
         self.ax.add_patch(Circle((cx,cy),1.2,facecolor='white',edgecolor=RUST,lw=.5,zorder=5))
         self.text(cx,cy,'1',6,color=RUST,ha='center',fontfamily=STYLE['math_font'])
-        self.text(cx,y+h-5.7,r'$W_1$',ha='center');self.text(cx,y+4.5,r'$b_1$',color=RUST,ha='center')
+        self.text(cx,y+h-5.7,r'$W_1$',ha='center');self.text(cx,y+5,r'$b_1$',color=RUST,ha='center')
         self.text(cx,y+1.5,rf'${W.shape[1]}\;\to\;{W.shape[0]}$',ha='center')
     def linear(self,x,y,w,h,W,b):
         W=np.asarray(W);b=np.asarray(b)

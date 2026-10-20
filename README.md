@@ -1,53 +1,118 @@
 # ohmyplt
 
-把研究逻辑画清楚，把细节做到位。
+**Draw the method, down to the operations.**
 
-一个面向科研图、神经网络架构和物理示意图的绘图 skill。它把多轮实际修改中形成的风格、技巧与工具整理为可复用的规则和Python组件。
+An agent skill for scientific architecture diagrams and research plots. Turn model code, sketches, or plotting scripts into figures with meaningful components, precise routing, SVG with editable text, and PDF/PNG exports backed by Python source.
 
-## 风格示例
+[简体中文](README.zh-CN.md) · [Install](#install) · [Quickstart](#quickstart) · [Gallery](#gallery)
 
-![ohmyplt风格示例：共同表示与稀疏历史反演](assets/approved-network-v19.png)
+[![Figure tests](https://github.com/Lee-Eee-Eee/ohmyplt/actions/workflows/smoke.yml/badge.svg)](https://github.com/Lee-Eee-Eee/ohmyplt/actions/workflows/smoke.yml)
+[![Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
-这张图展示了这套风格的主要做法：物理对象与时间采样接入网络；模块内部展示实际运算；残差沿圆角路径进入Σ；共享解码器一处展开、一处简写；Times数学与Arial标签各司其职。
+![Scientific architecture with physical inputs, sampling, shared decoding and training paths](assets/approved-network-v19.png)
 
-## 包含什么
+A research-project figure that shaped this skill. The examples below demonstrate its reusable components.
 
-- **结构与节奏**：依据科学主线安排面积、留白、分组和阅读路径。
-- **字体**：Arial正文，Times New Roman元素、公式、数值维度与上下标。
-- **精细连线**：连续圆角路径、圆周端口、完整箭杆、分组边框开口。
-- **功能图形**：时间采样、GRU门与回路、Dense带权连接、Linear矩阵与偏置、激活曲线。
-- **数据图**：配对比较、时间曲线、空间场、统计定义、同尺度比较。
-- **工具**：毫米坐标组件、字体与缺字检查、PDF字高与碰撞检查、最终尺寸与局部预览。
-- **出处**：Nature绘图skill、Transformer、SHPNet及实际修改经验的明确归属。
+## What you can draw
 
-## 安装
+- **Model architectures:** sampled histories, GRU gates, weighted connections, biases, affine maps, residual sums, and training paths matched to the implementation.
+- **Physical schematics:** objects connected to sensors, observations, models, and outputs.
+- **Research plots:** paired cases, time series, aligned panels, and explicit units and statistical meaning.
+
+Layouts use millimetres. Default typography is Arial for labels and Times New Roman for mathematics. Rounded paths meet explicit node ports. SVG keeps text editable, PDF embeds fonts, and Python source keeps the figure reproducible.
+
+## Install
+
+With the [Skills CLI](https://github.com/vercel-labs/skills) and Node.js 22.20+:
+
+```bash
+npx skills add Lee-Eee-Eee/ohmyplt --skill ohmyplt
+```
+
+Choose your agent when prompted; add `-g` for installation across projects. Install the Python dependencies in the environment that will run the scripts. For a manual Codex installation:
 
 ```bash
 git clone https://github.com/Lee-Eee-Eee/ohmyplt.git ~/.codex/skills/ohmyplt
 python -m pip install -r ~/.codex/skills/ohmyplt/requirements.txt
 ```
 
-在Codex中使用：
+Invoke `$ohmyplt` in Codex. Other agents can load [SKILL.md](SKILL.md) through their own skill mechanism.
 
-```text
-使用 $ohmyplt 绘制这张网络结构图，结合实际代码解释各模块与训练路径。
-```
+## Quickstart
 
-也可以将仓库放在其他路径，把[SKILL.md](SKILL.md)提供给支持skill的工具。
-
-## 运行组件示例
+Python 3.10+ is required. Clone into a working folder and generate three examples:
 
 ```bash
-python scripts/doctor.py
-python examples/network.py --out output
-python examples/data_plot.py --out output
-python scripts/preflight.py output/network.pdf --out output/qa
+git clone https://github.com/Lee-Eee-Eee/ohmyplt.git
+cd ohmyplt
+python -m pip install -r requirements.txt
+python scripts/quickstart.py --portable --out output
 ```
 
-默认使用系统已安装的Arial与Times New Roman；可通过`--font-dir`注册自己提供的字体目录。跨平台功能测试可显式指定`--body-font "Liberation Sans" --math-font "Liberation Serif"`，实际字体记录在输出清单中。
+`--portable` explicitly selects Matplotlib's bundled DejaVu Sans/Serif. For the default Arial/Times style, use `python scripts/quickstart.py --out output`. Register your own fonts with `--font-dir PATH`, or choose `--body-font` and `--math-font` explicitly.
 
-代码示例使用固定种子的演示数据。上方PNG是实际项目风格示例。工具用法见[references/tools.md](references/tools.md)。
+Open `output/network.png`, `output/data-plot.png`, and `output/style-comparison.png`. The folder also contains SVG/PDF files, sample data, font and input manifests, final-size previews, and PDF inspection reports. The output path is relative to where you run the command.
 
-## 借鉴与许可
+## Gallery
 
-[Nature Figure skill](https://github.com/Yuan1z0825/nature-skills)提供了最终尺寸、矢量输出、字体与碰撞检查等工作流启发；本仓库保留两项原始检查工具及Apache-2.0许可。Transformer和SHPNet提供了结构组织的参考。详见[来源说明](references/sources.md)和[第三方说明](THIRD_PARTY_NOTICES.md)。本仓库采用Apache-2.0许可。
+### Functional architecture
+
+![Sampled history, fixed and trainable branches, GRU and affine maps, a residual sum and a loss update path](assets/gallery/network.png)
+
+[Python](examples/network.py) · [SVG](assets/gallery/network.svg) · [PDF](assets/gallery/network.pdf)
+
+Seeded demonstration signals and weights show how components represent operations. Reproduce: `python examples/network.py --out output`.
+
+### Research data panels
+
+![Paired observations and a sampled time forecast in aligned plotting areas](assets/gallery/data-plot.png)
+
+[Python](examples/data_plot.py) · [SVG](assets/gallery/data-plot.svg) · [PDF](assets/gallery/data-plot.pdf)
+
+Paired observations and a sampled signal use deterministic demonstration data. Reproduce: `python examples/data_plot.py --out output`.
+
+### Same data, two styles
+
+![Default Matplotlib and ohmyplt styles applied to identical data and axis ranges](assets/gallery/style-comparison.png)
+
+[Python](examples/style_comparison.py) · [SVG](assets/gallery/style-comparison.svg) · [PDF](assets/gallery/style-comparison.pdf)
+
+Both panels use identical data, scales, limits, and labels. The left uses Matplotlib defaults; the right applies ohmyplt. Reproduce: `python examples/style_comparison.py --out output`.
+
+The ohmyplt-styled gallery elements use Arial/Times; the comparison baseline keeps Matplotlib defaults. Individual examples accept font arguments; the portable quickstart supplies bundled fonts to all three.
+
+## Prompts to start with
+
+**From model code**
+
+```text
+Use $ohmyplt to draw the architecture in model.py at 183 mm width.
+Check input/output shapes, branches, biases, shared parameters, and the loss path.
+Export SVG, PDF, PNG, and Python source.
+```
+
+**From a sketch**
+
+```text
+Use $ohmyplt to turn this sketch into a scientific schematic.
+Keep the physical object, sensor locations, and data-flow relationships.
+Use rounded port-based connections and export editable SVG plus Python source.
+```
+
+**From existing results**
+
+```text
+Use $ohmyplt to refine plot_results.py using the existing data.
+Keep units, scales, pairing, and uncertainty definitions.
+Align the comparison panels and inspect the PDF at its final size.
+```
+
+## Drawing and inspection tools
+
+Helpers provide millimetre primitives, font/glyph inspection, PDF text-size and collision checks, and final-size/crop previews. See the [tools reference](references/tools.md). Automated findings guide the final visual check.
+
+[Open a figure issue](https://github.com/Lee-Eee-Eee/ohmyplt/issues/new/choose) with a minimal script, safe sample input, and expected result. English and Chinese are welcome.
+
+## Credits and license
+
+[Nature Figure skill](https://github.com/Yuan1z0825/nature-skills) informed the final-size, vector-export, font, and collision-inspection workflow. Two original inspection tools and their Apache-2.0 license are retained. Research diagrams and this project's drawing iterations informed the component design. See [sources](references/sources.md), [third-party notices](THIRD_PARTY_NOTICES.md), and the [Apache-2.0 license](LICENSE).

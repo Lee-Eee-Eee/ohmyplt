@@ -1,0 +1,26 @@
+{
+  "size_mm": [
+    183.0,
+    78.0
+  ],
+  "fonts": {
+    "body_font": "Arial",
+    "math_font": "Times New Roman",
+    "body_pt": 7,
+    "math_pt": 7.5,
+    "script_pt": 5.4
+  },
+  "formats": [
+    "pdf",
+    "svg",
+    "png"
+  ],
+  "dpi": 600,
+  "warnings": [],
+  "inputs": [
+    {
+      "name": "data-demo.npz",
+      "sha256": "adcb3841332f8fe9200047bbd05035557cc68449cb9273902d98f190d19348f0"
+    }
+  ]
+}
