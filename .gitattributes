@@ -2,3 +2,4 @@
 *.png binary
 *.gif binary
 *.mp4 binary
+assets/gallery/*.svg linguist-generated=true

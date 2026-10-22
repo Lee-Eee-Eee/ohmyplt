@@ -17,6 +17,15 @@
   ],
   "dpi": 300,
   "warnings": [],
+  "runtime": {
+    "python": "3.12.6",
+    "numpy": "2.1.1",
+    "matplotlib": "3.9.2"
+  },
+  "renderer": {
+    "name": "ohmyplt.py",
+    "sha256": "e982d8dcd845a79ccc5ae6b57aa977dba63c622f687fe15cf06a3cad383f13a4"
+  },
   "inputs": [
     {
       "name": "style_comparison.py",

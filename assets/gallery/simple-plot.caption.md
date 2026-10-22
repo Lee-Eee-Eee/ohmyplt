@@ -1,0 +1,1 @@
+Seeded synthetic response (seed 41). Eleven observations are drawn from y = 0.3 + 1.6[1 - exp(-x/3)] with independent Gaussian noise. Error bars are the known one-standard-deviation observation uncertainties, sigma = 0.055 + 0.004x. The line is the generating curve.

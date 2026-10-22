@@ -1,0 +1,39 @@
+{
+  "size_mm": [
+    85.0,
+    67.0
+  ],
+  "fonts": {
+    "body_font": "Arial",
+    "math_font": "Times New Roman",
+    "body_pt": 7,
+    "math_pt": 7.5,
+    "script_pt": 5.4
+  },
+  "formats": [
+    "pdf",
+    "svg",
+    "png"
+  ],
+  "dpi": 600,
+  "warnings": [],
+  "runtime": {
+    "python": "3.12.6",
+    "numpy": "2.1.1",
+    "matplotlib": "3.9.2"
+  },
+  "renderer": {
+    "name": "ohmyplt.py",
+    "sha256": "e982d8dcd845a79ccc5ae6b57aa977dba63c622f687fe15cf06a3cad383f13a4"
+  },
+  "inputs": [
+    {
+      "name": "simple_plot.py",
+      "sha256": "aab8ba8c72c2acb32af4218c76e782942aa209e4b171fb399b0ceff73caf9cee"
+    },
+    {
+      "name": "simple-plot-data.npz",
+      "sha256": "c3358f9a0f9b44e16e067958e99159015504d92b8ca8ffb1037eef2f2a39ff21"
+    }
+  ]
+}

@@ -1,12 +1,11 @@
-"""Scientific vector drawing primitives in millimetres. Apache-2.0."""
+"""Scientific plot styling, export and optional millimetre schematic primitives."""
 from __future__ import annotations
-import hashlib,json,logging,math,os,warnings
+import hashlib,json,logging,math,os,platform,warnings
 from pathlib import Path
 import numpy as np
 import matplotlib as mpl
-mpl.use('Agg')
 import matplotlib.pyplot as plt
-from matplotlib import font_manager,_mathtext
+from matplotlib import font_manager
 from matplotlib.collections import PolyCollection
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib.patches import Circle,FancyArrowPatch,FancyBboxPatch,PathPatch,Rectangle
@@ -33,7 +32,6 @@ def configure(body_font='Arial',math_font='Times New Roman',font_dir=None):
     for family in [body_font,math_font]:
         try:paths[family]=font_manager.findfont(font_manager.FontProperties(family=family),fallback_to_default=False)
         except ValueError as exc:raise RuntimeError(f'Font unavailable: {family}. Install it, pass --font-dir, or explicitly choose another family.') from exc
-    if hasattr(_mathtext,'SHRINK_FACTOR'):_mathtext.SHRINK_FACTOR=.72
     mpl.rcParams.update({'font.family':body_font,'font.size':7,'text.color':INK,
         'mathtext.fontset':'custom','mathtext.rm':math_font,'mathtext.it':f'{math_font}:italic',
         'mathtext.bf':f'{math_font}:bold','mathtext.bfit':f'{math_font}:bold:italic',
@@ -44,14 +42,21 @@ def configure(body_font='Arial',math_font='Times New Roman',font_dir=None):
     STYLE.clear();STYLE.update(body_font=body_font,math_font=math_font,font_paths=paths,body_pt=7,math_pt=7.5,script_pt=5.4)
     return STYLE.copy()
 
-def apply_chart_style(ax):
+def apply_chart_style(ax, *, boxed=False):
+    """Style a normal Matplotlib axis after setting labels, limits and scales.
+
+    Use boxed=True for spatial fields or another plot that needs a full frame.
+    Data, units, scales, ticks, aspect and error definitions are preserved.
+    """
+    if not STYLE:
+        raise RuntimeError('Call configure() with your chosen fonts before apply_chart_style().')
     for label in [*ax.get_xticklabels(),*ax.get_yticklabels()]:
         value=label.get_text().replace('−','-')
         try:float(value);numeric=True
         except ValueError:numeric='$' in value
         label.set_fontfamily(STYLE['math_font'] if numeric else STYLE['body_font'])
     for axis in [ax.xaxis,ax.yaxis]:axis.get_offset_text().set_fontfamily(STYLE['math_font'])
-    ax.spines[['top','right']].set_visible(False)
+    ax.spines[['top','right']].set_visible(boxed)
     ax.tick_params(length=2,pad=2)
     return ax
 
@@ -203,12 +208,19 @@ def export(fig,stem,formats=('pdf','svg','png'),dpi=600,source_files=()):
     try:
         with warnings.catch_warnings(record=True) as captured:
             warnings.simplefilter('always')
-            for ext in formats:fig.savefig(str(stem)+'.'+ext,dpi=dpi,facecolor='white')
+            for ext in formats:
+                path=Path(str(stem)+'.'+ext)
+                fig.savefig(path,dpi=dpi,facecolor='white')
+                if ext=='svg':
+                    # Keep generated vector sources clean in text-based reviews.
+                    path.write_text('\n'.join(line.rstrip() for line in path.read_text(encoding='utf8').splitlines())+'\n',encoding='utf8',newline='\n')
         messages.extend(str(w.message) for w in captured)
     finally:logger.removeHandler(handler)
     missing=[s for s in messages if 'glyph' in s.lower() and any(word in s.lower() for word in ['missing','dummy symbol','does not have'])]
     manifest=dict(size_mm=(fig.get_size_inches()*25.4).tolist(),fonts={k:v for k,v in STYLE.items() if k!='font_paths'},
         formats=list(formats),dpi=dpi,warnings=messages,
+        runtime=dict(python=platform.python_version(),numpy=np.__version__,matplotlib=mpl.__version__),
+        renderer=dict(name=Path(__file__).name,sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest()),
         inputs=[dict(name=Path(p).name,sha256=hashlib.sha256(Path(p).read_bytes()).hexdigest()) for p in source_files])
     Path(str(stem)+'.manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
     if missing:raise RuntimeError('Missing glyphs in exported figure: '+', '.join(missing))

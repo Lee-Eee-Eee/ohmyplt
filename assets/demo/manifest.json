@@ -23,9 +23,9 @@
   },
   "sources_sha256": {
     "examples/residual_model.py": "20f17a230c5ef4df2a7347ab796421cdb24ed13639b97e8b4f35f1e3237e4d8f",
-    "examples/network.py": "0078b341467da8f6642740dcf544746526c09a207b7b165f942b7dcd67666e2a",
-    "assets/gallery/network.pdf": "fe25534727605b01cfe5dd38848017638d93302c245264120e073df4d66e2902",
+    "examples/network.py": "4ed9b89c37b2f348c5e51eedca66a4b5a6c29fc7bc8c8d2d8440482e47814cc7",
+    "assets/gallery/network.pdf": "e306506c31bc026de7890472c76c51bd23608485a82892e990beac876f42be0a",
     "assets/gallery/network-demo.npz": "8e2213c2d869551ff3d64a82a780d6401461f6f282c2abd93e086ca8a06718b8",
-    "scripts/build_demo.py": "005bd8320979451080667ea26bb342e9177ae57b2ba95dfec9598b40d0f18962"
+    "scripts/build_demo.py": "72cd90a0f75db80b11fe9f0c6fc21bfe25e24c3c210ccddc71d052cee7ae9cbf"
   }
 }

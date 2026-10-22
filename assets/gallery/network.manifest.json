@@ -17,7 +17,20 @@
   ],
   "dpi": 600,
   "warnings": [],
+  "runtime": {
+    "python": "3.12.6",
+    "numpy": "2.1.1",
+    "matplotlib": "3.9.2"
+  },
+  "renderer": {
+    "name": "ohmyplt.py",
+    "sha256": "e982d8dcd845a79ccc5ae6b57aa977dba63c622f687fe15cf06a3cad383f13a4"
+  },
   "inputs": [
+    {
+      "name": "network.py",
+      "sha256": "4ed9b89c37b2f348c5e51eedca66a4b5a6c29fc7bc8c8d2d8440482e47814cc7"
+    },
     {
       "name": "network-demo.npz",
       "sha256": "8e2213c2d869551ff3d64a82a780d6401461f6f282c2abd93e086ca8a06718b8"
