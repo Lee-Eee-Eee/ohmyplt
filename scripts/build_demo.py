@@ -157,7 +157,7 @@ def scenes(report, prediction):
     label(draw, (670, 426), "Example inference", 20, bold=True)
     label(draw, (670, 464), "y[0] = " + f"{prediction[0]:.3f}", 23, TEAL, mono=True)
     label(draw, (670, 505), "8 finite output values", 18, MUTED)
-    label(draw, (40, 610), "Run: python scripts/quickstart.py --portable --out output", 18, MUTED, mono=True)
+    label(draw, (40, 610), "Run: python scripts/quickstart.py --example network --portable", 18, MUTED, mono=True)
     return [first, second, third, fourth]
 
 

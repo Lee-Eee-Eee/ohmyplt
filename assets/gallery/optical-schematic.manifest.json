@@ -1,0 +1,35 @@
+{
+  "size_mm": [
+    183.0,
+    82.0
+  ],
+  "fonts": {
+    "body_font": "Arial",
+    "math_font": "Times New Roman",
+    "body_pt": 7,
+    "math_pt": 7.5,
+    "script_pt": 5.4
+  },
+  "formats": [
+    "pdf",
+    "svg",
+    "png"
+  ],
+  "dpi": 600,
+  "warnings": [],
+  "runtime": {
+    "python": "3.12.6",
+    "numpy": "2.1.1",
+    "matplotlib": "3.9.2"
+  },
+  "renderer": {
+    "name": "ohmyplt.py",
+    "sha256": "e982d8dcd845a79ccc5ae6b57aa977dba63c622f687fe15cf06a3cad383f13a4"
+  },
+  "inputs": [
+    {
+      "name": "optical_schematic.py",
+      "sha256": "82583969409b0b5141158bfd1aecd37599ab5fafb32bc4f40bb66596624423f1"
+    }
+  ]
+}

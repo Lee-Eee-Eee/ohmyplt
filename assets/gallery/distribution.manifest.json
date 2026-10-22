@@ -1,0 +1,39 @@
+{
+  "size_mm": [
+    85.0,
+    72.0
+  ],
+  "fonts": {
+    "body_font": "Arial",
+    "math_font": "Times New Roman",
+    "body_pt": 7,
+    "math_pt": 7.5,
+    "script_pt": 5.4
+  },
+  "formats": [
+    "pdf",
+    "svg",
+    "png"
+  ],
+  "dpi": 600,
+  "warnings": [],
+  "runtime": {
+    "python": "3.12.6",
+    "numpy": "2.1.1",
+    "matplotlib": "3.9.2"
+  },
+  "renderer": {
+    "name": "ohmyplt.py",
+    "sha256": "e982d8dcd845a79ccc5ae6b57aa977dba63c622f687fe15cf06a3cad383f13a4"
+  },
+  "inputs": [
+    {
+      "name": "scientific_plots.py",
+      "sha256": "2f04d6abf4d820bcd55de935830d56e15958fb44fa7fc849e46e1aa820c79428"
+    },
+    {
+      "name": "distribution-data.npz",
+      "sha256": "bd83e8921c7c0a01c5128a64149fe935ee97dfe744e98fb598b0f94d713e1627"
+    }
+  ]
+}

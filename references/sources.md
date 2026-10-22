@@ -24,6 +24,6 @@ Nature Figure使用的固定提交为`6827ae57b62b201acd06b401619050411c0d82f6`�
 - [NIST symbol and type conventions](https://www.nist.gov/pml/special-publication-811/nist-guide-si-chapter-10-more-printing-and-using-symbols-and-numbers)
 - [Matplotlib Mathtext](https://matplotlib.org/stable/users/explain/text/mathtext.html)
 
-Arial正文、Times New Roman数学、Σ节点、圆角贯通路径和物理/时间输入的保留，来自本项目多轮审阅形成的用户偏好。上面的论文提供组织思路，示例PNG为本项目原创图稿。
+Arial说明文字、Times New Roman数学是本项目的默认排版选择，项目与期刊约定可覆盖。Σ节点、圆角路径和物理/时间输入的保留，来自具体架构图的多轮审阅；这些局部表达按当前图的内容选用。上面的论文提供示意图组织思路，示例PNG为本项目原创图稿。
 
 示例PNG：`assets/approved-network-v19.png`，SHA-256：`7963d4a5c45e11e7d0cde7e20362e00ebf15eae1da64177e718bb71f2b81d5ac`。发布于2026-10-20，原图V19。

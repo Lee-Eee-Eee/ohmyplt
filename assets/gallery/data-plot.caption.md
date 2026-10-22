@@ -1,1 +1,1 @@
-Seeded demonstration data: twelve paired cases and a sampled time signal with a future curve. Pairing lines identify the same case; no statistical inference is attached.
+Seeded synthetic examples (seed 19). Left: twelve independent cases, each with a paired Reference and Model error expressed in percent; a line connects the same case. Right: a synthetic reference signal, seven exact history samples through t = 12 h, and a perturbed future curve shown from t = 12 h. The dashed line marks the forecast origin.

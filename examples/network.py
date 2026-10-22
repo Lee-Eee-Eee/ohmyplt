@@ -34,7 +34,7 @@ def main():
     p.wire([(169,31),(169,6.5),(154,6.5)],color=RUST,r=2)
     p.wire([(130,6.5),(49,6.5),(49,23)],color=RUST,ls='-.',r=2)
     p.text(89,10,r'AdamW updates $\theta$',color=RUST,ha='center')
-    export(p.fig,args.out/'network',source_files=[data])
+    export(p.fig,args.out/'network',source_files=[__file__,data])
     (args.out/'network.caption.md').write_text('Component demonstration using seeded illustrative signals and weights. Four representative neurons show a 32×32 affine map; nine columns show the nine time samples. This is a drawing template.\n',encoding='utf8')
     print(args.out/'network.pdf')
 

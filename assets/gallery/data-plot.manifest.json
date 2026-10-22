@@ -17,10 +17,23 @@
   ],
   "dpi": 600,
   "warnings": [],
+  "runtime": {
+    "python": "3.12.6",
+    "numpy": "2.1.1",
+    "matplotlib": "3.9.2"
+  },
+  "renderer": {
+    "name": "ohmyplt.py",
+    "sha256": "e982d8dcd845a79ccc5ae6b57aa977dba63c622f687fe15cf06a3cad383f13a4"
+  },
   "inputs": [
     {
+      "name": "data_plot.py",
+      "sha256": "48b93ff02f1066720afb5af204d724c3226fcae85c6fe2319ed588a123d0e07b"
+    },
+    {
       "name": "data-demo.npz",
-      "sha256": "adcb3841332f8fe9200047bbd05035557cc68449cb9273902d98f190d19348f0"
+      "sha256": "c794401c89a0342f36b2335dfff8aa35ea994bbe195421470d572ee53c04b855"
     }
   ]
 }

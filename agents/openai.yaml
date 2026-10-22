@@ -1,4 +1,4 @@
 interface:
   display_name: "ohmyplt"
-  short_description: "精致科研矢量绘图：清晰结构、Times公式、连线端口与功能示意"
-  default_prompt: "使用 $ohmyplt 绘制或打磨这张科研图，保持清晰的逻辑、精确的字体与连线，并提供可编辑矢量文件。"
+  short_description: "科研绘图与论文配图：轻量数据图、统计比较、多面板、实验示意和模型架构"
+  default_prompt: "使用 $ohmyplt 绘制或改进这张科研图，选择与任务相称的流程，保留数据、单位和统计含义，并交付所需格式与源码。"
