@@ -87,18 +87,19 @@ def calibration_plot():
     x, y, sigma = (data[k] for k in ("energy", "channel", "sigma"))
     intercept, slope = data["coefficients"]
     fig, (ax, residual_ax) = plt.subplots(
-        2, 1, sharex=True, figsize=(85 / 25.4, 96 / 25.4),
+        2, 1, sharex=True, figsize=(85 / 25.4, 87 / 25.4),
         gridspec_kw={"height_ratios": [2.6, 1]}, layout="constrained")
     line_x = np.linspace(0, 1400, 200)
     ax.plot(line_x, intercept + slope * line_x, color=RUST, lw=0.85, label="Weighted fit")
-    ax.errorbar(x, y, yerr=sigma, fmt="o", ms=3, color=BLUE, capsize=2,
-                lw=0.7, label="Observations")
+    ax.errorbar(x, y, yerr=sigma, fmt="o", ms=3.5, color=BLUE, capsize=2,
+                ecolor="#A8BEC5", markeredgecolor="white", markeredgewidth=0.4,
+                lw=0.7, label="Observations", zorder=3)
     ax.set(ylabel="Channel", xlim=(0, 1400))
-    ax.set_title("Synthetic calibration", loc="left", fontsize=8)
     ax.legend(loc="upper left", frameon=False, fontsize=6.5)
     residual_ax.axhline(0, color="#8799A3", lw=0.6, ls="--")
-    residual_ax.errorbar(x, data["residual"], yerr=sigma, fmt="o", ms=3,
-                         color=BLUE, capsize=2, lw=0.7)
+    residual_ax.errorbar(x, data["residual"], yerr=sigma, fmt="o", ms=3.5,
+                         color=BLUE, ecolor="#A8BEC5", capsize=2, lw=0.7,
+                         markeredgecolor="white", markeredgewidth=0.4, zorder=3)
     residual_ax.set(xlabel="Energy (keV)", ylabel="Residual\n(channel)", xticks=[0, 500, 1000])
     error = np.sqrt(np.diag(data["covariance"]))
     caption = (
@@ -115,16 +116,16 @@ def calibration_plot():
 
 def spectrum_plot():
     data = spectrum_data()
-    fig, ax = plt.subplots(figsize=(85 / 25.4, 70 / 25.4), layout="constrained")
-    ax.stairs(data["counts"], data["edges"], color=BLUE, lw=0.8, label="Observed counts")
+    fig, ax = plt.subplots(figsize=(85 / 25.4, 58 / 25.4), layout="constrained")
+    ax.stairs(data["counts"], data["edges"], color=BLUE, lw=1.05,
+              label="Observed counts", zorder=3)
     ax.errorbar(data["centers"], data["counts"], yerr=data["count_sigma"],
-                fmt="none", color=BLUE, lw=0.45, alpha=0.65)
+                fmt="none", ecolor="#A8BEC5", lw=0.45, zorder=1)
     ax.stairs(data["expected_counts"], data["edges"], color=RUST, ls="--", lw=0.8,
               label="Generating expectation")
     ax.set(xlabel="Energy (keV)", ylabel="Counts / bin", xlim=(0, 1500),
            ylim=(0, 1.35 * np.max(data["counts"] + data["count_sigma"])),
            xticks=[0, 500, 1000, 1500])
-    ax.set_title("Synthetic count spectrum", loc="left", fontsize=8)
     ax.legend(loc="upper right", frameon=False, fontsize=6)
     caption = (
         "Seeded synthetic count spectrum (seed 23). Each of 150 bins spans 10 keV. "
@@ -136,35 +137,46 @@ def spectrum_plot():
     return fig, data, caption
 
 
-def heatmap_plot():
+def heatmap_plot(*, width_mm=183):
     data = heatmap_data()
-    fig, axes = plt.subplots(1, 3, sharex=True, sharey=True,
-                             figsize=(183 / 25.4, 62 / 25.4), layout="constrained")
+    compact = width_mm < 160
+    height_mm = 44 if compact else 51
+    fig = plt.figure(figsize=(width_mm / 25.4, height_mm / 25.4))
+    grid = fig.add_gridspec(2, 3, left=0.07, right=0.985,
+                            bottom=0.22 if compact else 0.19,
+                            top=0.88 if compact else 0.90,
+                            height_ratios=[1, 0.06], hspace=0.65, wspace=0.18)
+    axes = [fig.add_subplot(grid[0, 0])]
+    axes.extend(fig.add_subplot(grid[0, column], sharex=axes[0], sharey=axes[0])
+                for column in (1, 2))
     common_min = min(data["reference"].min(), data["prediction"].min())
     common_max = max(data["reference"].max(), data["prediction"].max())
     common = Normalize(common_min, common_max)
     error_max = float(np.max(np.abs(data["error"])))
     error_norm = TwoSlopeNorm(vmin=-error_max, vcenter=0, vmax=error_max)
-    for ax, key, title in zip(axes, ["reference", "prediction", "error"],
-                              ["Reference", "Prediction", "Prediction - reference"]):
+    for index, (ax, key, title) in enumerate(zip(
+            axes, ["reference", "prediction", "error"],
+            ["Reference", "Prediction", "Signed error"])):
         image = ax.pcolormesh(data["x_edges"], data["y_edges"], data[key],
                               norm=error_norm if key == "error" else common,
                               cmap="RdBu_r" if key == "error" else "viridis", rasterized=True)
         ax.set_aspect("equal")
-        ax.set(xlabel=r"$x$ (mm)", xticks=[-2, 0, 2], yticks=[-1, 0, 1])
-        ax.set_title(title, fontsize=7.5)
+        ax.set(xticks=[-2, 0, 2], yticks=[-1, 0, 1])
+        ax.set_xlabel(r"$x$ (mm)", fontsize=7.5)
+        ax.set_title(f"({chr(97 + index)}) {title}", loc="left", fontsize=7.5, pad=4)
+        ax.tick_params(labelleft=index == 0, labelsize=7)
         if key == "prediction":
             common_image = image
-    axes[0].set_ylabel(r"$y$ (mm)")
-    bar = fig.colorbar(common_image, ax=axes[:2], location="bottom", pad=0.12,
-                       fraction=0.12, ticks=np.linspace(common_min, common_max, 3))
+    axes[0].set_ylabel(r"$y$ (mm)", fontsize=7.5)
+    bar = fig.colorbar(common_image, cax=fig.add_subplot(grid[1, :2]),
+                       orientation="horizontal", ticks=np.linspace(common_min, common_max, 3))
     bar.set_label("Amplitude (a.u.)")
-    error_bar = fig.colorbar(image, ax=axes[2], location="bottom", pad=0.12,
-                             fraction=0.12, ticks=[-error_max, 0, error_max])
+    error_bar = fig.colorbar(image, cax=fig.add_subplot(grid[1, 2]),
+                             orientation="horizontal", ticks=[-error_max, 0, error_max])
     error_bar.set_label("Signed error (a.u.)")
     for colorbar in (bar, error_bar):
         colorbar.ax.xaxis.set_major_formatter(FormatStrFormatter("%.2f"))
-    fig.suptitle("Seeded synthetic spatial field", fontsize=8)
+        colorbar.ax.tick_params(labelsize=7)
     data.update(common_limits=np.array([common_min, common_max]),
                 error_limits=np.array([-error_max, error_max]))
     caption = (
@@ -181,7 +193,7 @@ def heatmap_plot():
 def distribution_plot():
     data = distribution_data()
     rng = np.random.default_rng(32)
-    fig, ax = plt.subplots(figsize=(85 / 25.4, 72 / 25.4), layout="constrained")
+    fig, ax = plt.subplots(figsize=(85 / 25.4, 61 / 25.4), layout="constrained")
     groups = [data["group_a"], data["group_b"]]
     boxes = ax.boxplot(groups, positions=[1, 2], widths=0.42, patch_artist=True,
                        showfliers=False, medianprops={"color": INK, "lw": 0.9},
@@ -189,11 +201,10 @@ def distribution_plot():
                        capprops={"color": "#758A95", "lw": 0.7})
     for i, (values, color, fill) in enumerate(zip(groups, [BLUE, RUST], ["#E5F0F2", "#F6E7DB"]), 1):
         boxes["boxes"][i-1].set(facecolor=fill, edgecolor=color, linewidth=0.7)
-        ax.scatter(i + rng.uniform(-0.11, 0.11, len(values)), values, s=10,
-                    facecolor="white", edgecolor=color, linewidth=0.7, zorder=3)
+        ax.scatter(i + rng.uniform(-0.11, 0.11, len(values)), values, s=11,
+                    facecolor=color, edgecolor="white", linewidth=0.45, zorder=3)
     ax.set(xticks=[1, 2], xticklabels=["Group A", "Group B"],
            ylabel="Response (a.u.)", xlim=(0.5, 2.5))
-    ax.set_title("Independent synthetic cases", loc="left", fontsize=8)
     caption = (
         "Seeded synthetic distributions (seed 31): 24 independent cases in each group. "
         "Group A draws from Normal(0.12, 0.025^2) and Group B from Normal(0.15, 0.030^2). "

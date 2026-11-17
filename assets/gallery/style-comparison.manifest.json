@@ -1,11 +1,13 @@
 {
   "size_mm": [
-    210.00000000000003,
-    96.0
+    183.0,
+    73.0
   ],
   "fonts": {
     "body_font": "Arial",
     "math_font": "Times New Roman",
+    "fallback_fonts": [],
+    "palette": "contrast",
     "body_pt": 7,
     "math_pt": 7.5,
     "script_pt": 5.4
@@ -24,12 +26,12 @@
   },
   "renderer": {
     "name": "ohmyplt.py",
-    "sha256": "e982d8dcd845a79ccc5ae6b57aa977dba63c622f687fe15cf06a3cad383f13a4"
+    "sha256": "1483d2430ef0452ee90411daa197d5713749baab1a7f6b0299ce16f62eff1b6d"
   },
   "inputs": [
     {
       "name": "style_comparison.py",
-      "sha256": "2d02c43b6177aa5c6e57e0267bd26544ac72e90a4f1f9a3edced265b5b9c375d"
+      "sha256": "24666dc49c864ed8a5dd039d7be3e41d8d1169726e2e82c3ef07cb0394a36f02"
     },
     {
       "name": "style-comparison-data.npz",
@@ -59,16 +61,16 @@
       "tolerance_pt": 1.5,
       "boxes_pt": [
         [
-          50.5984251968504,
-          73.4740157480315,
-          223.22834645669292,
-          149.6692913385827
+          49.28031496062993,
+          37.24724409448819,
+          194.52755905511813,
+          142.78110236220473
         ],
         [
-          354.18897637795277,
-          73.4740157480315,
-          223.22834645669292,
-          149.6692913385827
+          311.244094488189,
+          37.24724409448819,
+          194.52755905511813,
+          142.78110236220473
         ]
       ],
       "mode": "row"

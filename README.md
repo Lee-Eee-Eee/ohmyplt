@@ -136,6 +136,8 @@ Export editable SVG and Python source.
 
 Use [data-plot recipes](references/data-plots.md), [shared design guidance](references/design.md), and the [tools reference](references/tools.md) for the relevant task. Checks follow the figure: data and final-size review for a single plot, panel comparisons and optional PDF geometry inspection for more involved figures. See [quality checks](references/quality.md).
 
+Choose a qualitative color cycle with `configure(palette="contrast")`, `"bright"`, or `"okabe-ito"`; use `get_palette(name, n)` for explicit colors. Named `fallback_fonts` support multilingual labels. Simple plots keep the data area prominent, panel titles stay short and aligned, and print-size review covers line weight, color hierarchy, legends, and colorbars. PDF inspection supports `--vector-only` and `--require-embedded-fonts` when those formats are required.
+
 [Open a figure issue](https://github.com/Lee-Eee-Eee/ohmyplt/issues/new/choose) with a minimal script, safe sample input, and expected result. English and Chinese are welcome.
 
 ## Credits and license

@@ -135,6 +135,8 @@ python scripts/quickstart.py --example all --portable --check --out output
 
 按任务使用[数据图配方](references/data-plots.md)、[共用设计规范](references/design.md)和[工具说明](references/tools.md)。单图核对数据与最终尺寸；组合或复杂图增加有关的面板比较与可选 PDF 几何检查。见[分层质量检查](references/quality.md)。
 
+可用`configure(palette="contrast")`、`"bright"`或`"okabe-ito"`选择定性色彩循环，`get_palette(name, n)`用于显式取色，`fallback_fonts`支持多语种标签。简单图优先保留数据区，面板小标题简短对齐，按最终尺寸检查配色层次、线宽、图例与色条。PDF检查可按交付要求启用`--vector-only`和`--require-embedded-fonts`。
+
 遇到问题可[提交 issue](https://github.com/Lee-Eee-Eee/ohmyplt/issues/new/choose)，附最小脚本、可公开的样例输入和期望结果。中英文均可。
 
 ## 借鉴与许可

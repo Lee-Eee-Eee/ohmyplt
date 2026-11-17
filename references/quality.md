@@ -6,12 +6,15 @@
 
 已有图只改颜色、标签或图例时，重点检查改动与受影响的排版。无需生成全部示例、节点布局或与该图无关的报告。
 
+在最终插入尺寸下检查视觉重心。数据先于网格和参考线进入视线，误差与背景保持可辨。同等类别的权重接近，局部高亮对应明确对象。检查图内总标题、说明块是否重复图注，标签与所属对象是否靠近，空白是否有助于分组。若文字已经完整而画布仍有大块无用空间，调整布局或画布高度。
+
 ## 组合图：增加关系检查
 
 - 拟合/残差来自同一批点，残差符号、单位、零线与误差定义一致。
 - 对比面板的轴范围、归一化、颜色含义和统计单位可比。共享色标依据比较目的确定；signed error采用其独立尺度。
 - 重复面板核对绘图区与间距。相同跨度可用`check_axes_alignment`；拟合+残差等不同比例面板按阅读目的安排，避免强求所有轴等高。
 - 误差带、透明点、栅格和线型在最终尺寸仍可辨；图例和色条未挤压主要数据。
+- 同行面板的小标题字号、字重和基线一致，并贴近各自数据区。热图检查物理纵横比与窄色条的比例。
 
 ## 复杂图与定稿：按需检查PDF
 
@@ -20,12 +23,15 @@
 ```bash
 python scripts/preflight.py output/figure.pdf --out output/qa --min-pt 5
 python scripts/preflight.py output/figure.pdf --out output/qa --allow-font Arial --allow-font TimesNewRoman
+python scripts/preflight.py output/figure.pdf --out output/qa --vector-only --require-embedded-fonts
 python scripts/preview.py output/figure.pdf --out output/final-size.png --dpi 108
 ```
 
 预览是按指定dpi渲染的像素图；在查看器中按目标物理宽度评估印刷尺寸，屏幕缩放比例会影响实际观感。局部预览仅选标签、色条、分支或其他有疑点的区域，命令见[工具](tools.md)。
 
 `preflight`检查实际PDF文字字高、几何碰撞、裁切与可选字体白名单。它不验证数据分析、误差传播、统计显著性或模型结构。曲线穿过数据点标签、热图内数字等可能是有意设计；检查具体报告后修复真实问题，必要时说明已核对的有意重叠。全图栅格化或转曲的PDF无法通过文本检查证明字体与字号正确。
+
+`--vector-only`核查实际显示的位图，适用于明确要求全矢量的交付。`--require-embedded-fonts`核查PDF字体程序是否嵌入，字体名称白名单仍单独检查。官方字标转曲后按矢量图形目视核对。密集网格或照片采用栅格层时，按实际交付需求选择检查选项。
 
 ## 停止条件与交付
 

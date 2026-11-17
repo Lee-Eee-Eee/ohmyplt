@@ -38,7 +38,8 @@ CAPTION = "Same seeded data and axis limits in both panels."
 def add_curves(ax, time, reference, observation, styled=False):
     """Keep every data and axis choice common to both panels."""
     options = (
-        ({"color": BLUE, "lw": 1.0}, {"color": RUST, "lw": 0.8})
+        ({"color": BLUE, "lw": 1.4, "zorder": 3},
+         {"color": RUST, "lw": 0.85, "alpha": 0.85, "zorder": 2})
         if styled
         else ({}, {})
     )
@@ -55,9 +56,12 @@ def add_curves(ax, time, reference, observation, styled=False):
         ylabel=YLABEL,
     )
     if styled:
-        ax.legend(loc="upper right", frameon=False, fontsize=7)
+        ax.xaxis.label.set_fontsize(8.5)
+        ax.yaxis.label.set_fontsize(8.5)
+        ax.tick_params(labelsize=7.5)
+        ax.legend(loc="upper left", frameon=False, fontsize=7.5)
     else:
-        ax.legend(loc="upper right")
+        ax.legend(loc="upper left")
 
 
 def verify_comparison(fig, baseline, styled):
@@ -97,10 +101,11 @@ def main():
     # Create the left panel under the actual Matplotlib defaults. Typography,
     # line widths/colors, ticks, spines and the legend are left untouched.
     with mpl.rc_context(rc=mpl.rcParamsDefault):
-        fig = plt.figure(figsize=(210 / 25.4, 96 / 25.4))
-        baseline = fig.add_axes([0.085, 0.27, 0.375, 0.55])
+        fig = plt.figure(figsize=(183 / 25.4, 73 / 25.4))
+        baseline = fig.add_axes([0.095, 0.18, 0.375, 0.69])
         add_curves(baseline, time, reference, observation)
-        baseline.set_title("Matplotlib defaults", pad=10)
+        baseline_title = baseline.set_title(
+            "(a) Matplotlib defaults", loc="left", fontsize=9.5, pad=7)
         # Math font selection is normally resolved at render time. Freeze the
         # left labels to its default before configuring the right panel.
         for label in (baseline.xaxis.label, baseline.yaxis.label):
@@ -112,11 +117,11 @@ def main():
         }
 
         configure(args.body_font, args.math_font, args.font_dir)
-        styled = fig.add_axes([0.595, 0.27, 0.375, 0.55])
+        baseline_title.set_fontfamily(args.body_font)
+        styled = fig.add_axes([0.60, 0.18, 0.375, 0.69])
         add_curves(styled, time, reference, observation, styled=True)
-        styled.set_title("ohmyplt", fontsize=10, pad=10)
+        styled.set_title("(b) ohmyplt", loc="left", fontsize=9.5, pad=7)
         apply_chart_style(styled)
-        fig.text(0.5, 0.055, CAPTION, ha="center", va="center", fontsize=8)
 
         checks = verify_comparison(fig, baseline, styled)
         (work / "style-comparison.checks.json").write_text(

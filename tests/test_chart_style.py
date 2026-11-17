@@ -11,11 +11,59 @@ import numpy as np
 
 SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
 sys.path.insert(0, str(SCRIPTS))
-from ohmyplt import apply_chart_style, configure, export
+from ohmyplt import BLUE, RUST, apply_chart_style, configure, export, get_palette
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 
 
 class ChartStyleTests(unittest.TestCase):
+    def test_palette_limits_reject_repeated_and_invalid_color_requests(self):
+        self.assertEqual(get_palette("contrast"), ["#004488", "#DDAA33", "#BB5566"])
+        self.assertEqual(len(get_palette("bright")), 7)
+        self.assertEqual(len(get_palette("okabe-ito")), 8)
+        for name in ("contrast", "bright", "okabe-ito"):
+            colors = get_palette(name)
+            self.assertEqual(len(colors), len(set(colors)))
+            self.assertEqual(get_palette(name, 2), colors[:2])
+            for n in (0, -1, len(colors) + 1):
+                with self.subTest(name=name, n=n), self.assertRaises(ValueError):
+                    get_palette(name, n)
+        with self.assertRaisesRegex(ValueError, "Unknown palette"):
+            get_palette("unknown")
+        with self.assertRaisesRegex(TypeError, "integer"):
+            get_palette("contrast", 2.5)
+
+    def test_configure_keeps_positional_fonts_and_explicit_colors(self):
+        with mpl.rc_context():
+            configure("DejaVu Sans", "DejaVu Serif", None, palette="bright")
+            fig, ax = plt.subplots()
+            auto_line, = ax.plot([0, 1], [0, 1])
+            blue_line, = ax.plot([0, 1], [1, 2], color=BLUE)
+            rust_line, = ax.plot([0, 1], [2, 3], color=RUST)
+            self.assertEqual(auto_line.get_color(), get_palette("bright")[0])
+            self.assertEqual(blue_line.get_color(), BLUE)
+            self.assertEqual(rust_line.get_color(), RUST)
+            plt.close(fig)
+
+    def test_chart_style_preserves_explicit_fallback_for_text_ticks(self):
+        with mpl.rc_context():
+            configure("DejaVu Sans", "DejaVu Serif", fallback_fonts=("DejaVu Serif",))
+            fig, ax = plt.subplots()
+            ax.set_xticks([0, 1], ["Alpha", "Beta"])
+            ax.set_yticks([0, 1])
+            apply_chart_style(ax)
+            self.assertEqual(ax.get_xticklabels()[0].get_fontfamily(),
+                             ["DejaVu Sans", "DejaVu Serif"])
+            self.assertEqual(ax.get_yticklabels()[0].get_fontfamily(), ["DejaVu Serif"])
+            self.assertEqual(ax.xaxis.label.get_fontfamily(),
+                             ["DejaVu Sans", "DejaVu Serif"])
+            plt.close(fig)
+
+    def test_unavailable_fallback_font_fails_explicitly(self):
+        with self.assertRaisesRegex(RuntimeError, "Font unavailable: Missing Test Family"):
+            configure("DejaVu Sans", "DejaVu Serif",
+                      fallback_fonts=("Missing Test Family 12345",))
+
     def test_style_preserves_data_scale_units_and_spatial_aspect(self):
         configure("DejaVu Sans", "DejaVu Serif")
         fig, ax = plt.subplots()

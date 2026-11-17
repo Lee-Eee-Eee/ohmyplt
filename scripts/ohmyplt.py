@@ -18,28 +18,73 @@ CYAN='#E5F0F2';PURPLE='#EAE5F2';GOLD='#F7EDCE'
 WEIGHT=LinearSegmentedColormap.from_list('ohmyplt_weight',['#3D638D','#9AB4CD','#E3E7ED','#D3AD8F','#A76143'])
 STYLE={}
 
-def configure(body_font='Arial',math_font='Times New Roman',font_dir=None):
-    """Register local fonts and require explicit families, with no silent substitution."""
+PALETTES = {
+    "contrast": ("#004488", "#DDAA33", "#BB5566"),
+    "bright": ("#4477AA", "#EE6677", "#228833", "#CCBB44",
+               "#66CCEE", "#AA3377", "#BBBBBB"),
+    "okabe-ito": ("#000000", "#E69F00", "#56B4E9", "#009E73",
+                  "#F0E442", "#0072B2", "#D55E00", "#CC79A7"),
+}
+
+
+def get_palette(name, n=None):
+    """Return distinct colors from Tol contrast/bright or the original Okabe–Ito set.
+
+    Sources: https://sronpersonalpages.nl/~pault/ and
+    https://jfly.uni-koeln.de/color/index.html
+    """
+    if not isinstance(name, str) or name not in PALETTES:
+        raise ValueError(f"Unknown palette {name!r}. Choose from: {', '.join(PALETTES)}.")
+    colors = PALETTES[name]
+    if n is None:
+        return list(colors)
+    if isinstance(n, bool) or not isinstance(n, (int, np.integer)):
+        raise TypeError("n must be an integer or None.")
+    if not 1 <= n <= len(colors):
+        raise ValueError(f"Palette {name!r} contains {len(colors)} distinct colors; "
+                         f"n must be between 1 and {len(colors)} (received {n}).")
+    return list(colors[:n])
+
+
+def configure(body_font='Arial',math_font='Times New Roman',font_dir=None, *,
+              palette='contrast', fallback_fonts=()):
+    """Register fonts, set a color cycle and use explicitly requested fallback families.
+
+    For Chinese labels, pass fallback_fonts=("Microsoft YaHei",). Every named
+    family must be available. The first three positional arguments are unchanged.
+    """
+    colors = get_palette(palette)
+    if isinstance(fallback_fonts, str):
+        raise TypeError("fallback_fonts must be a sequence of font family names.")
+    fallback_fonts = tuple(fallback_fonts)
+    body_fonts = [body_font, *fallback_fonts]
     directory=font_dir or os.environ.get('OHMYPLT_FONT_DIR')
     if directory:
         for path in sorted(Path(directory).rglob('*')):
-            if path.suffix.lower() in ['.ttf','.otf']:font_manager.fontManager.addfont(str(path))
+            if path.suffix.lower() in ['.ttf','.otf','.ttc']:
+                font_manager.fontManager.addfont(str(path))
     if os.name=='nt':
-        for name in ['arial.ttf','arialbd.ttf','ariali.ttf','arialbi.ttf','times.ttf','timesbd.ttf','timesi.ttf','timesbi.ttf']:
+        for name in ['arial.ttf','arialbd.ttf','ariali.ttf','arialbi.ttf',
+                     'times.ttf','timesbd.ttf','timesi.ttf','timesbi.ttf',
+                     'msyh.ttc','msyhbd.ttc','msyhl.ttc']:
             path=Path(os.environ.get('WINDIR','C:/Windows'))/'Fonts'/name
             if path.is_file():font_manager.fontManager.addfont(str(path))
     paths={}
-    for family in [body_font,math_font]:
+    for family in dict.fromkeys([*body_fonts, math_font]):
         try:paths[family]=font_manager.findfont(font_manager.FontProperties(family=family),fallback_to_default=False)
         except ValueError as exc:raise RuntimeError(f'Font unavailable: {family}. Install it, pass --font-dir, or explicitly choose another family.') from exc
-    mpl.rcParams.update({'font.family':body_font,'font.size':7,'text.color':INK,
+    mpl.rcParams.update({'font.family':body_fonts,'font.size':7,'text.color':INK,
+        'axes.prop_cycle':mpl.cycler(color=colors),
         'mathtext.fontset':'custom','mathtext.rm':math_font,'mathtext.it':f'{math_font}:italic',
         'mathtext.bf':f'{math_font}:bold','mathtext.bfit':f'{math_font}:bold:italic',
         'mathtext.sf':math_font,'mathtext.tt':math_font,'mathtext.cal':f'{math_font}:italic',
         'mathtext.fallback':None,'pdf.fonttype':42,'svg.fonttype':'none','savefig.facecolor':'white',
         'axes.spines.top':False,'axes.spines.right':False,'axes.edgecolor':EDGE,'axes.linewidth':.55,
         'xtick.major.width':.55,'ytick.major.width':.55,'xtick.labelsize':6.5,'ytick.labelsize':6.5})
-    STYLE.clear();STYLE.update(body_font=body_font,math_font=math_font,font_paths=paths,body_pt=7,math_pt=7.5,script_pt=5.4)
+    STYLE.clear()
+    STYLE.update(body_font=body_font,math_font=math_font,font_paths=paths,
+                 fallback_fonts=fallback_fonts,palette=palette,
+                 body_pt=7,math_pt=7.5,script_pt=5.4)
     return STYLE.copy()
 
 def apply_chart_style(ax, *, boxed=False):
@@ -54,7 +99,8 @@ def apply_chart_style(ax, *, boxed=False):
         value=label.get_text().replace('−','-')
         try:float(value);numeric=True
         except ValueError:numeric='$' in value
-        label.set_fontfamily(STYLE['math_font'] if numeric else STYLE['body_font'])
+        label.set_fontfamily(STYLE['math_font'] if numeric else
+                             [STYLE['body_font'], *STYLE['fallback_fonts']])
     for axis in [ax.xaxis,ax.yaxis]:axis.get_offset_text().set_fontfamily(STYLE['math_font'])
     ax.spines[['top','right']].set_visible(boxed)
     ax.tick_params(length=2,pad=2)
@@ -68,7 +114,8 @@ class Plate:
         self.ax=self.fig.add_axes([0,0,1,1]);self.ax.set(xlim=(0,self.w),ylim=(0,self.h));self.ax.axis('off')
     def text(self,x,y,s,size=None,**kwargs):
         size=(7.5 if '$' in s else 7) if size is None else size
-        opts=dict(fontsize=size,color=INK,ha='left',va='center',zorder=6,fontfamily=STYLE['body_font']);opts.update(kwargs)
+        opts=dict(fontsize=size,color=INK,ha='left',va='center',zorder=6,
+                  fontfamily=[STYLE['body_font'], *STYLE['fallback_fonts']]);opts.update(kwargs)
         return self.ax.text(x,y,s,**opts)
     def panel(self,x,y,letter,title):
         self.text(x,y,letter,8,weight='bold');self.text(x+5,y,title,7,weight='bold')

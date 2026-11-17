@@ -31,10 +31,13 @@ export(fig, "output/signal")
 
 | 共用接口 | 用途 |
 |---|---|
-| `configure(body_font, math_font, font_dir)` | 注册字体并设置全局绘图起点 |
+| `configure(body_font, math_font, font_dir, *, palette, fallback_fonts)` | 注册字体，设置具名颜色循环与显式字体回退 |
+| `get_palette(name, n=None)` | 读取Tol `contrast`、`bright`或原版`okabe-ito`定性颜色 |
 | `apply_chart_style(ax, boxed=False)` | 轻量轴样式；`boxed=True` 显示完整边框 |
 | `check_axes_alignment(fig, axes, mode)` | 比较相同布局要求的绘图区，默认容差1.5 pt |
 | `export(fig, stem, formats, dpi, source_files)` | 导出格式并记录字体、尺寸、输入哈希与警告 |
+
+例如`configure(palette="bright", fallback_fonts=("Microsoft YaHei",))`为中文标签指定已安装的回退字体。原有三个位置参数可继续使用。`get_palette("contrast", 2)`返回两种颜色，超出该色板的颜色数量会报错；同一比较组按语义保持编码。显式指定的曲线颜色继续由调用者控制。
 
 `export()` 默认输出 PDF、SVG、PNG；可用 `formats=("svg", "png")` 等元组选择需要的格式。
 SVG 保留普通文本，PDF 嵌入所用字体；SVG 的字体替换可能影响布局。源码与数据保存在研究项目中，按实际导出结果检查。
@@ -82,12 +85,14 @@ doctor 检查字体文件与字形覆盖；以实际字体结果决定字形或�
 ```bash
 python scripts/preflight.py output/figure.pdf --out output/qa --min-pt 5
 python scripts/preflight.py output/figure.pdf --out output/qa --allow-font Arial --allow-font TimesNewRoman
+python scripts/preflight.py output/figure.pdf --out output/qa --vector-only --require-embedded-fonts
 python scripts/preview.py output/figure.pdf --out output/final-size.png --dpi 108
 python scripts/preview.py output/figure.pdf --out output/detail.png --dpi 288 --clip-mm 40 30 22 18
 ```
 
 `--min-pt` 按成图与实际要求调整。裁剪参数为左、下、宽、高，单位 mm、左下角原点。
 preflight 调用随仓库保存的 Nature Figure 字高与碰撞工具，日志和 JSON 报告写入所选目录。
+报告同时记录实际页面毫米尺寸、位图及字体资源。`--vector-only`和`--require-embedded-fonts`分别启用全矢量与字体嵌入检查，按交付要求选择。
 非零退出码对应需要定位的具体问题；结合当前图的结构检查相关文字与几何。
 
 ## 可选：结构示意组件

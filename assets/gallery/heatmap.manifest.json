@@ -1,11 +1,13 @@
 {
   "size_mm": [
     183.0,
-    62.0
+    51.0
   ],
   "fonts": {
     "body_font": "Arial",
     "math_font": "Times New Roman",
+    "fallback_fonts": [],
+    "palette": "contrast",
     "body_pt": 7,
     "math_pt": 7.5,
     "script_pt": 5.4
@@ -24,12 +26,12 @@
   },
   "renderer": {
     "name": "ohmyplt.py",
-    "sha256": "e982d8dcd845a79ccc5ae6b57aa977dba63c622f687fe15cf06a3cad383f13a4"
+    "sha256": "1483d2430ef0452ee90411daa197d5713749baab1a7f6b0299ce16f62eff1b6d"
   },
   "inputs": [
     {
       "name": "scientific_plots.py",
-      "sha256": "2f04d6abf4d820bcd55de935830d56e15958fb44fa7fc849e46e1aa820c79428"
+      "sha256": "1dae47ff9dacfdff8db84fc4638d2adc2e4beaadf62a8979f454ec63f9a4e4cb"
     },
     {
       "name": "heatmap-data.npz",

@@ -4,6 +4,7 @@ from pathlib import Path
 import unittest
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -63,6 +64,26 @@ class WeightedFitTests(unittest.TestCase):
 
 
 class SyntheticDataTests(unittest.TestCase):
+    def test_heatmap_keeps_shared_scale_geometry_and_aligned_panels(self):
+        PLOTS.configure("DejaVu Sans", "DejaVu Serif")
+        for width in (183, 139.7):
+            with self.subTest(width_mm=width):
+                fig, data, _ = PLOTS.heatmap_plot(width_mm=width)
+                axes = fig.axes[:3]
+                fig.canvas.draw()
+                fields = [ax.collections[0] for ax in axes]
+                self.assertIs(fields[0].norm, fields[1].norm)
+                self.assertEqual(fields[2].norm.vcenter, 0)
+                np.testing.assert_allclose(
+                    [fields[0].norm.vmin, fields[0].norm.vmax], data["common_limits"])
+                for ax, field, key in zip(axes, fields, ("reference", "prediction", "error")):
+                    self.assertEqual(ax.get_aspect(), 1)
+                    np.testing.assert_array_equal(field.get_array(), data[key])
+                boxes = [ax.get_position().bounds for ax in axes]
+                np.testing.assert_allclose([box[1:] for box in boxes],
+                                           [boxes[0][1:]] * 3, atol=1e-12)
+                plt.close(fig)
+
     def test_spectrum_bin_geometry_and_poisson_error(self):
         data = PLOTS.spectrum_data()
         edges = data["edges"]

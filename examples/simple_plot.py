@@ -6,7 +6,7 @@ import sys
 import numpy as np
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from ohmyplt import BLUE, configure, apply_chart_style, export
+from ohmyplt import configure, apply_chart_style, export, get_palette
 import matplotlib.pyplot as plt
 
 
@@ -26,13 +26,15 @@ def main():
     curve_x = np.linspace(0, 10, 300)
     curve_y = 0.3 + 1.6 * (1 - np.exp(-curve_x / 3))
 
-    fig, ax = plt.subplots(figsize=(85 / 25.4, 67 / 25.4), layout="constrained")
-    ax.plot(curve_x, curve_y, color="#788A93", lw=0.9, label="Generating curve")
-    ax.errorbar(x, y, yerr=sigma, fmt="o", ms=3, capsize=2, lw=0.7,
-                color=BLUE, label="Observations")
+    observation_color, _, curve_color = get_palette("contrast")
+    fig, ax = plt.subplots(figsize=(85 / 25.4, 56 / 25.4), layout="constrained")
+    ax.plot(curve_x, curve_y, color=curve_color, lw=1.05,
+            label="Generating curve", zorder=2)
+    ax.errorbar(x, y, yerr=sigma, fmt="o", ms=3.6, capsize=2, lw=0.7,
+                color=observation_color, ecolor="#A8BED4", markeredgecolor="white",
+                markeredgewidth=0.45, label="Observations", zorder=3)
     ax.set(xlabel=r"Input $x$ (a.u.)", ylabel=r"Response $y$ (a.u.)",
            xlim=(-0.3, 10.3), ylim=(0, 2.2), xticks=[0, 5, 10])
-    ax.set_title("Synthetic response", loc="left", fontsize=8)
     ax.legend(loc="lower right", frameon=False, fontsize=6.5)
     apply_chart_style(ax)
 

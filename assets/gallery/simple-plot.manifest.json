@@ -1,11 +1,13 @@
 {
   "size_mm": [
     85.0,
-    67.0
+    56.0
   ],
   "fonts": {
     "body_font": "Arial",
     "math_font": "Times New Roman",
+    "fallback_fonts": [],
+    "palette": "contrast",
     "body_pt": 7,
     "math_pt": 7.5,
     "script_pt": 5.4
@@ -24,12 +26,12 @@
   },
   "renderer": {
     "name": "ohmyplt.py",
-    "sha256": "e982d8dcd845a79ccc5ae6b57aa977dba63c622f687fe15cf06a3cad383f13a4"
+    "sha256": "1483d2430ef0452ee90411daa197d5713749baab1a7f6b0299ce16f62eff1b6d"
   },
   "inputs": [
     {
       "name": "simple_plot.py",
-      "sha256": "aab8ba8c72c2acb32af4218c76e782942aa209e4b171fb399b0ceff73caf9cee"
+      "sha256": "838e1458c901ab35d63b11b3c6a4bb6553981bc565001d77c9429c33b8dbc796"
     },
     {
       "name": "simple-plot-data.npz",
