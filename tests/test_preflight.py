@@ -16,7 +16,7 @@ class PdfResourceTests(unittest.TestCase):
             page = document.new_page()
             page.draw_line((20, 20), (150, 20))
             font = font_manager.findfont("DejaVu Sans")
-            page.insert_font(fontname="body", fontfile=font)
+            page.insert_font(fontname="body", fontfile=str(font))
             page.insert_text((20, 50), "Vector labels", fontname="body")
             images, fonts = inspect_resources(document)
             self.assertEqual(images, [])
